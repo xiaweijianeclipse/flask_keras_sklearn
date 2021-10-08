@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "nav.html" %}
+<link rel="stylesheet" href="{{url_for('dogCat.static',filename='mystyle.css')}}">
+<script src="{{url_for('admin.static', filename='jquery-3.6.0.min.js')}}"></script>
+<div class="container-fluid">
+    <h1>鸢尾花预测</h1>
+    <form method="post">
+  <div class="form-group">
+    <label for="text1">请输入鸢尾花特征（以逗号分割）</label>
+    <input type="text" class="form-control" name="text" id="text1" aria-describedby="emailHelp">
+   </div>
+   <button type="submit" class="btn btn-primary btn-success" id="mybtn">Submit</button>
+    </form>
+    {%for message in get_flashed_messages() %}
+        <div>{{message}}</div>
+    {% endfor %}
+</div>
+{% endblock %}
+<script>
+        $(function(){
+                $("#mybtn").on("click",function(){
+                      $("form").submit()
+                })
+        })
+</script>
+

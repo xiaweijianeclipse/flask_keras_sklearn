@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "nav.html" %}
+<script src="{{url_for('admin.static', filename='jquery-3.6.0.min.js')}}"></script>
+<div class="container-fluid">
+    <div class="row justify-content-md-center">
+        <h1>猫狗预测</h1>
+    </div>
+    <div class="row justify-content-md-center">
+        <form action="a.html" enctype="multipart/form-data" method="post">
+            <div class="form-group">
+                <label for="inputName">请输入图片</label>
+                <input type="file" class="form-control-file" id="inputName" name="photo">
+            </div>
+            <button type="button" class="btn btn-outline-success btn-lg" id="mybtn">预测</button>
+        </form>
+    </div>
+    <div class="row justify-content-md-center">
+        <p>狗：<span id="dog-prediction"></span></p>
+    </div>
+    <div class="row justify-content-md-center">
+        <p>猫：<span id="cat-prediction"></span></p>
+    </div>
+</div>
+<script type=text/javascript>
+    $SCRIPT_ROOT = {{request.script_root|tojson|safe}};
+</script>
+<script>
+
+    $(function(){
+           let imageMessage;
+           $("#inputName").change(function(event){
+                   file = event.target.files[0]
+                   reader = new FileReader()
+                   reader.readAsDataURL(file)
+                   reader.onload = function(){
+                        imageMessage = reader.result;
+                        imageMessage = imageMessage.replace("data:image/jpeg;base64,","");
+                   }
+            })
+           $("#mybtn").on("click",function(){
+                let message = {
+                       image: imageMessage
+                }
+                let path = $SCRIPT_ROOT || 'http://127.0.0.1:5000/predict'
+                $.post(path,JSON.stringify(message),function(response){
+                    $("#dog-prediction").text(response.prediction.dog.toFixed(6));
+                    $("#cat-prediction").text(response.prediction.cat.toFixed(6));
+                })
+           })
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="{{url_for('.static', filename='jquery-3.6.0.min.js')}}"></script>
+<div class="container">
+    <h1 style="text-align:center">插入栏目</h1>
+    <form>
+        <div class="form-group">
+            <label for="inputName">栏目名称</label>
+            <input type="text" class="form-control" id="inputName" aria-describedby="inputHelp">
+            <small id="inputHelp" class="form-text text-muted">请输入名称</small>
+        </div>
+        <button type="button" class="btn btn-outline-success btn-lg">提交</button>
+    </form>
+</div>
+<script>
+    $(function(){
+        $("#inputName").on("focusout", function(){
+            alert( $(this).val())
+       });
+    });
+</script>
+{% endblock %}
